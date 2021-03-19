@@ -43,10 +43,11 @@ window.addEventListener('DOMContentLoaded', () => {
    const deadline = '2021-04-01';
 
    function getTimeRemaining(endtime) {
+
       // здесь мы получаем количество миллисекунд до конечного времени
       const t = Date.parse(endtime) - Date.parse(new Date()),
-            // сколько суток осталось до дедлайна
-            days = Math.floor(t / (1000 * 60 * 60 * 24)),
+            
+            days = Math.floor(t / (1000 * 60 * 60 * 24)), // сколько суток осталось до дедлайна
             hours = Math.floor((t / (1000 * 60 * 60) % 24)),
             minutes = Math.floor((t / 1000 / 60) % 60),
             seconds = Math.floor((t / 1000) % 60);
@@ -75,6 +76,7 @@ window.addEventListener('DOMContentLoaded', () => {
             minutes = timer.querySelector('#minutes'),
             seconds = timer.querySelector('#seconds'),
             timeInterval = setInterval(updateClock, 1000);
+
       // ? Мы вручную вызываем updateClock(), чтобы убрать мигание в верстке при загрузке
       updateClock();
       
@@ -100,28 +102,37 @@ window.addEventListener('DOMContentLoaded', () => {
          modal = document.querySelector('.modal'),
          modalCloseBtn = document.querySelector('[data-close]');
 
+
+   function openModal() {
+      modal.classList.add('show');
+      modal.classList.remove('hide');
+
+      // (вариант2) modal.classList.toggle('show');
+
+      // ? Во время открытия модального окна, этот стиль не дает прокручивать страницу
+      document.body.style.overflow = 'hidden';
+
+      // Если клиент сам открыл модальное окно без нашего участия, то окно окрывать не нужно
+      clearInterval(modalTimerId);
+   }
+
    modalTrigger.forEach(btn => {
-      btn.addEventListener('click', () => {
-         modal.classList.add('show');
-         modal.classList.remove('hide');
-         // (вариант2) modal.classList.toggle('show');
-         // ? Во время открытия модального окна, этот стиль не дает прокручивать страницу
-         document.body.style.overflow = 'hidden';
-   
-      });
+      btn.addEventListener('click', openModal);
    });
 
    function closeModal() {
       modal.classList.add('hide');
       modal.classList.remove('show');
+
       // (вариант 2) modal.classList.toggle('hide');
+
       // ? Когда мы закрываем модальное окно необходимо восстановить скролл на странице
-      
       document.body.style.overflow = ''; // браузер сам автоматически решит, что нужно изменить
    }
    
 
    modalCloseBtn.addEventListener('click', closeModal);
+
    // ? чтобы при нажатии на серое поле, модальное окно закрывалось
    modal.addEventListener('click', (e) => {
       if (e.target === modal) {
@@ -137,6 +148,19 @@ window.addEventListener('DOMContentLoaded', () => {
       }
    });
 
+
+   
+   const modalTimerId = setTimeout(openModal, 5000);
+
+   function showModalByScroll() {
+      // если клиент долистал до конца страницы, то показываем модальное окно
+      if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+         openModal();
+         window.removeEventListener('scroll', showModalByScroll);
+      }
+   }
+
+   window.addEventListener('scroll', showModalByScroll);
 
 
 
