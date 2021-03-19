@@ -94,5 +94,51 @@ window.addEventListener('DOMContentLoaded', () => {
 
    setClock('.timer', deadline);
 
-   // ! SOMETHING ELSE *******************************************************
+   // ! MODAL *******************************************************
+
+   const modalTrigger = document.querySelectorAll('[data-modal]'),
+         modal = document.querySelector('.modal'),
+         modalCloseBtn = document.querySelector('[data-close]');
+
+   modalTrigger.forEach(btn => {
+      btn.addEventListener('click', () => {
+         modal.classList.add('show');
+         modal.classList.remove('hide');
+         // (вариант2) modal.classList.toggle('show');
+         // ? Во время открытия модального окна, этот стиль не дает прокручивать страницу
+         document.body.style.overflow = 'hidden';
+   
+      });
+   });
+
+   function closeModal() {
+      modal.classList.add('hide');
+      modal.classList.remove('show');
+      // (вариант 2) modal.classList.toggle('hide');
+      // ? Когда мы закрываем модальное окно необходимо восстановить скролл на странице
+      
+      document.body.style.overflow = ''; // браузер сам автоматически решит, что нужно изменить
+   }
+   
+
+   modalCloseBtn.addEventListener('click', closeModal);
+   // ? чтобы при нажатии на серое поле, модальное окно закрывалось
+   modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+         closeModal();
+      }
+   });
+
+   // ? чтобы при нажатии на кнопку esc модальное окно закрывалось
+
+   document.addEventListener('keydown', (e) => {
+      if (e.code === 'Escape' && modal.classList.contains('show')) { // нажатие на кнопку Escape
+         closeModal();
+      }
+   });
+
+
+
+
+   // ! MODAL *******************************************************
 });
