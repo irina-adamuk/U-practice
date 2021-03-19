@@ -1,0 +1,24 @@
+body {
+   display: block;
+   margin: 8px;
+}
+
+.box {
+   box-sizing: border-box;
+   padding: 10px;
+   margin: 0 auto;
+   margin-top: 50px;
+   
+   width: 400px;
+   height: 350px;
+
+   overflow: scroll;
+}
+
+button {
+   width: 100px;
+   height: 40px;
+   display: block;
+   margin: 0 auto;
+   margin-top: 20px;
+}
