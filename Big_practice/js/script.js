@@ -359,7 +359,7 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
          thanksModal.remove();
          prevModalDialog.classList.add('show');
-         prevModalDialog.classList.removw('hide');
+         prevModalDialog.classList.remove('hide');
          closeModal();
       }, 4000);
    }
