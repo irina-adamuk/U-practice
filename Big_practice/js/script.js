@@ -301,7 +301,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
    function postData(form) {
       form.addEventListener('submit', (e) => {
-         e.preventDefalt();
+         e.preventDefault();
 
          const statusMessage = document.createElement('div');
          statusMessage.classList.add('status');
